@@ -8,5 +8,10 @@ namespace Copyright.Model
 {
     public interface ICopyrightHolderData
     {
+        IEnumerable<CopyrightHolder> GetAllCopyrightHolders();
+
+        CopyrightHolder GetCopyrightHolder(int id);
+
+        void SaveCopyrightHolder(int id, CopyrightHolder author);
     }
 }

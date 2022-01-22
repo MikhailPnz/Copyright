@@ -8,5 +8,8 @@ namespace Copyright.Model
 {
     public class CopyrightHolder
     {
+        public string Name { get; set; }
+        public int NumberOfFiles { get; set; }
+
     }
 }
