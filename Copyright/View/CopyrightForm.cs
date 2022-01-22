@@ -8,13 +8,46 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Copyright
+namespace Copyright.View
 {
-    public partial class Form1 : Form
+    internal partial class CopyrightForm : Form
     {
-        public Form1()
+        public CopyrightForm()
         {
             InitializeComponent();
         }
+
+        private void SourcePath_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void FinalPath_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Txt_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void C_cpp_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void AllFile_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Processed_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Presenter.CopyrightPresenter Presenter
+        { private get; set; }
     }
 }

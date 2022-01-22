@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Copyright.Model
 {
-    internal class CopyrightHolder
+    public class CopyrightHolder
     {
     }
 }

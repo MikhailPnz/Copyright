@@ -12,11 +12,16 @@ namespace Copyright
         /// Главная точка входа для приложения.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+
+            var data = new Model.CopyrightHolderData();
+            var view = new View.CopyrightForm();
+            var presenter = new Presenter.CopyrightPresenter(view, data);
+
+            Application.Run(view);
         }
     }
 }
