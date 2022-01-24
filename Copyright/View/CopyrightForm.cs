@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Copyright.View
@@ -74,13 +67,16 @@ namespace Copyright.View
         }
 
         private void Processed_Click(object sender, EventArgs e)
-        {
+        {            
+
+
             if (_sourcePathSelected && _finalPathSelected && _fileTypeSelected)
             {
                 
                 _sourcePathSelected = !_sourcePathSelected; // возможно после отработки программы сбросить
                 _finalPathSelected = !_finalPathSelected;
                 _fileTypeSelected = !_fileTypeSelected;
+                Presenter.SearchFiles();
                 /*
                 if (_fileTypeTxt)
                 {
@@ -110,16 +106,23 @@ namespace Copyright.View
             {
                 MessageBox.Show("Укажите тип файла!");
             }
-        }
+        }        
 
-        public void notification(string message)
+        public void Notification(string message)
         {
             MessageBox.Show(message);
         }
 
-        public void notification(string message1, string message2)
+        public void Notification(string message1, string message2)
         {
             MessageBox.Show(message1, message2);
+        }
+
+        public void Order(string order)
+        {
+            int index = richTextBox1.Rtf.LastIndexOf("}");
+            richTextBox1.Rtf = richTextBox1.Rtf.Substring(0, index) + order;
+            //richTextBox1.Rtf = richTextBox1.Rtf. + order; //+ "}";
         }
 
         public Presenter.CopyrightPresenter Presenter

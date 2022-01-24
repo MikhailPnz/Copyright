@@ -1,13 +1,11 @@
 ﻿using Copyright.Model;
 using Copyright.View;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Copyright.Presenter
 {
@@ -59,7 +57,8 @@ namespace Copyright.Presenter
         public void CountProcessedFiles()
         {
             int processedFiles = _data.ProcessedFiles;
-            _data.ProcessedFiles = processedFiles++; // проверить
+            //processedFiles++;
+            _data.ProcessedFiles = ++processedFiles; // проверить
         }
 
         /*public void ResetProcessedFiles()
@@ -70,7 +69,8 @@ namespace Copyright.Presenter
         public void CountNoMatchesFound()
         {
             int noMatchesFound = _data.NoMatchesFound;
-            _data.NoMatchesFound = noMatchesFound++; // проверить
+            //noMatchesFound++;
+            _data.NoMatchesFound = ++noMatchesFound; // проверить
         }
 
         /*public void ResetNoMatchesFound()
@@ -266,6 +266,42 @@ namespace Copyright.Presenter
             }
         }
 
+        public void Report()
+        {
+
+            int processedFiles = _data.ProcessedFiles;
+            int noMatchesFound = _data.NoMatchesFound;
+            var copyrightHolderNames = _data.GetAllCopyrightHolders();
+
+            string table = @"{{\rtf1\ansi\deff0" +
+                            @"\trowd\cellx4020\cellx5520\intbl\cell\intbl    Кол-во файлов:\cell\row" +
+                            @"\trowd\cellx4020\cellx5520\intbl   Всего обработано:\cell\intbl                processedFiles\cell\row" +
+                            @"\trowd\cellx4020\cellx5520\intbl   Сигнатуры не найдены:\cell\intbl                noMatchesFound\cell\row" +
+                            @"\trowd\cellx5520\intbl\cell\row" +
+                            @"\trowd\cellx4020\cellx5520\intbl   Список авторов:\cell\intbl\cell\row";
+                            //@"\trowd\cellx4020\cellx5520\intbl\cell\intbl\cell\row";                            
+
+            string author = @"\trowd\cellx4020\cellx5520\intbl   Name\cell\intbl                NumberOfFiles\cell\row";
+
+            StringBuilder str = new StringBuilder();
+            str.Append(table);
+            str.Replace("processedFiles", Convert.ToString(processedFiles));
+            str.Replace("noMatchesFound", Convert.ToString(noMatchesFound));
+
+            foreach (CopyrightHolder ch in copyrightHolderNames)
+            {
+                str.Append(author);
+                str.Replace("Name", ch.Name);
+                str.Replace("NumberOfFiles", Convert.ToString(ch.NumberOfFiles));               
+            }
+
+            str.Append("}}");
+
+            _view.Order(str.ToString());
+            
+            //return str.ToString();
+        }        
+
         //public void SearchFiles(string pathSource)
         public void SearchFiles()
         {
@@ -287,14 +323,14 @@ namespace Copyright.Presenter
                     }
                 }
 
-                //view.report(сountProcessedFiles, totalNoMatchesFound);
+                Report();
                 Reset();
-                _view.notification("Готово!");                
+                _view.Notification("Готово!");                
             }
             catch (Exception e)
             {
                 // проверить работу
-                _view.notification("The process failed: {0}", e.ToString());
+                _view.Notification("The process failed: {0}", e.ToString());
             }
         }
 
