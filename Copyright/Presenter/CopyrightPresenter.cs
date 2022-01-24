@@ -56,27 +56,15 @@ namespace Copyright.Presenter
 
         public void CountProcessedFiles()
         {
-            int processedFiles = _data.ProcessedFiles;
-            //processedFiles++;
-            _data.ProcessedFiles = ++processedFiles; // проверить
-        }
-
-        /*public void ResetProcessedFiles()
-        {            
-            _data.ProcessedFiles = 0; // проверить
-        }*/
+            int processedFiles = _data.ProcessedFiles;            
+            _data.ProcessedFiles = ++processedFiles;
+        }        
 
         public void CountNoMatchesFound()
         {
-            int noMatchesFound = _data.NoMatchesFound;
-            //noMatchesFound++;
-            _data.NoMatchesFound = ++noMatchesFound; // проверить
-        }
-
-        /*public void ResetNoMatchesFound()
-        {
-            _data.NoMatchesFound = 0; // проверить
-        }*/
+            int noMatchesFound = _data.NoMatchesFound;            
+            _data.NoMatchesFound = ++noMatchesFound;
+        }        
 
         public void SaveCopyrightHolder(string name, int numberOfFiles)
         {
@@ -87,14 +75,9 @@ namespace Copyright.Presenter
 
       
         public void Reset()
-        {
-            //сountProcessedFiles = 0;
-            //totalNoMatchesFound = 0;
+        {            
             _data.ProcessedFiles = 0;
-            _data.NoMatchesFound = 0;
-
-            //model.CopyrightHolder.Clear();
-            //model.ListCopyrightHolder.Clear();
+            _data.NoMatchesFound = 0;            
             _data.ClearCopyrightHolder();
         }
 
@@ -176,8 +159,7 @@ namespace Copyright.Presenter
                 string pattern2 = "Copyright\\(C\\)";
                 string pattern3 = "Copyright";
                 string pattern4 = "/\\*(.*?)\\*/"; // подстрока в /* */                
-                string pattern8 = "//(.+?)(?:\n|$)"; // подстрока в //
-                string pattern9 = @"^[^@\s]+@[^@\s]+\.[^@\s]+$"; // Email - не работает                                   
+                string pattern8 = "//(.+?)(?:\n|$)"; // подстрока в //                                                   
                 string replacement = "_copyright_c_";
 
                 ListAuthor(line);
@@ -200,7 +182,7 @@ namespace Copyright.Presenter
                     using (StreamWriter file = new StreamWriter(Path.Combine(finalPath, fileName)))
                     {
                         matchesFound = 0;
-                        ListAuthorMatches(matches); // если в файле есть хоть одна сигнатура у автора в файле +1
+                        ListAuthorMatches(matches); 
                         file.Write(line2);
                     }
                 }
@@ -219,50 +201,33 @@ namespace Copyright.Presenter
             string pattern6 = @"([A-Z][a-z]{1,14}\s[A-Z][a-z]{1,14}\s[A-Z][a-z]{1,14})|([А-Я][а-я]{1,14}\s[А-Я][а-я]{1,14}\s[А-Я][а-я]{1,14})"; // ФИО
             string pattern7 = @"([A-Z][a-z]{1,14}\s[A-Z][a-z]{1,14})|([А-Я][а-я]{1,14}\s[А-Я][а-я]{1,14})"; // Фамилия Имя
 
-            MatchCollection copyrightHolderMatches = Regex.Matches(line, pattern5 + "|" + pattern6 + "|" + pattern7);
-            //int count = 0;
+            MatchCollection copyrightHolderMatches = Regex.Matches(line, pattern5 + "|" + pattern6 + "|" + pattern7);           
             foreach (Match chm in copyrightHolderMatches)
-            {
-                //if (!model.CopyrightHolder.Contains(new CopyrightHolder(chm.Value))) // проверить
-                //if (!copyrightHolder.ContainsKey(chm.Value))
+            {                
                 if (!copyrightHolderNames.Contains(chm.Value))
-                {
-                    //model.CopyrightHolder.Add(new CopyrightHolder(chm.Value, 0));
-                    SaveCopyrightHolder(chm.Value, 0);
-                    //model.ListCopyrightHolder.Add(chm.Value);
-                    //copyrightHolder.Add(chm.Value, 0);
-                    //listCopyrightHolder.Add(chm.Value);
+                {                    
+                    SaveCopyrightHolder(chm.Value, 0);                    
                 }
                 else
                 {
                     continue;
-                }
-                //count++;
+                }               
             }
         }
 
         public void ListAuthorMatches(MatchCollection matches)
         {
-            var copyrightHolderNames = from copyrightHolder in _data.GetAllCopyrightHolders() select copyrightHolder.Name;
-            //int count = 0;
-            foreach (var lch in copyrightHolderNames)
-            //foreach (var lch in listCopyrightHolder)
+            var copyrightHolderNames = from copyrightHolder in _data.GetAllCopyrightHolders() select copyrightHolder.Name;           
+            foreach (var lch in copyrightHolderNames)           
             {
                 foreach (Match m in matches)
                 {
                     if (Regex.IsMatch(m.Value, lch))
                     {
-                        _data.CountNumberOfFiles_CopyrightHolder(lch);
-                        /*foreach (CopyrightHolder author in model.CopyrightHolder.Where(ff => ff.Name == lch))
-                        {
-                            author.NumberOfFiles++;
-                        }*/
-                        //model.CopyrightHolder[count].NumberOfFiles++;
-                        //copyrightHolder[lch]++;
+                        _data.CountNumberOfFiles_CopyrightHolder(lch);                        
                         break;
                     }
-                }
-                //count++;
+                }                
             }
         }
 
@@ -278,8 +243,7 @@ namespace Copyright.Presenter
                             @"\trowd\cellx4020\cellx5520\intbl   Всего обработано:\cell\intbl                processedFiles\cell\row" +
                             @"\trowd\cellx4020\cellx5520\intbl   Сигнатуры не найдены:\cell\intbl                noMatchesFound\cell\row" +
                             @"\trowd\cellx5520\intbl\cell\row" +
-                            @"\trowd\cellx4020\cellx5520\intbl   Список авторов:\cell\intbl\cell\row";
-                            //@"\trowd\cellx4020\cellx5520\intbl\cell\intbl\cell\row";                            
+                            @"\trowd\cellx4020\cellx5520\intbl   Список авторов:\cell\intbl\cell\row";                                                       
 
             string author = @"\trowd\cellx4020\cellx5520\intbl   Name\cell\intbl                NumberOfFiles\cell\row";
 
@@ -297,12 +261,9 @@ namespace Copyright.Presenter
 
             str.Append("}}");
 
-            _view.Order(str.ToString());
-            
-            //return str.ToString();
+            _view.Order(str.ToString());                        
         }        
-
-        //public void SearchFiles(string pathSource)
+        
         public void SearchFiles()
         {
             string sourcePath = _data.SourcePath;
@@ -328,8 +289,7 @@ namespace Copyright.Presenter
                 _view.Notification("Готово!");                
             }
             catch (Exception e)
-            {
-                // проверить работу
+            {                
                 _view.Notification("The process failed: {0}", e.ToString());
             }
         }

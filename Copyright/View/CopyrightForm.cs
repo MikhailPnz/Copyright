@@ -7,10 +7,7 @@ namespace Copyright.View
     {
         private bool _fileTypeSelected = false;
         private bool _sourcePathSelected = false;
-        private bool _finalPathSelected = false;
-        //private bool _fileTypeTxt = false;
-        //private bool _fileTypeC_Cpp = false;
-        //private bool _fileTypeAll = false;
+        private bool _finalPathSelected = false;        
         private bool fileTypeAll = true;
         private readonly string fileTypeTxt = ".txt";
         private readonly string fileTypeC = ".c";
@@ -19,13 +16,7 @@ namespace Copyright.View
         public CopyrightForm()
         {
             InitializeComponent();
-        }
-
-        /*public IList<string> Copyright 
-        {
-            get { return (IList<string>)this.Copyright. }; 
-            set;        
-        }*/
+        }        
 
         private void SourcePath_Click(object sender, EventArgs e)
         {
@@ -47,22 +38,19 @@ namespace Copyright.View
 
         private void Txt_Click(object sender, EventArgs e)
         {
-            _fileTypeSelected = !_fileTypeSelected;
-            //_fileTypeTxt = !_fileTypeTxt;
+            _fileTypeSelected = !_fileTypeSelected;            
             Presenter.FileTypeTxtSet(fileTypeTxt);
         }
 
         private void C_cpp_Click(object sender, EventArgs e)
         {
-            _fileTypeSelected = !_fileTypeSelected;
-            //_fileTypeC_Cpp = !_fileTypeC_Cpp;
+            _fileTypeSelected = !_fileTypeSelected;            
             Presenter.FileTypeC_CppSet(fileTypeC, fileTypeCpp);
         }
 
         private void AllFile_Click(object sender, EventArgs e)
         {
-            _fileTypeSelected = !_fileTypeSelected;
-            //_fileTypeAll = !_fileTypeSelected;
+            _fileTypeSelected = !_fileTypeSelected;            
             Presenter.FileTypeAllSet(fileTypeAll);
         }
 
@@ -71,28 +59,11 @@ namespace Copyright.View
 
 
             if (_sourcePathSelected && _finalPathSelected && _fileTypeSelected)
-            {
-                
-                _sourcePathSelected = !_sourcePathSelected; // возможно после отработки программы сбросить
+            {                
+                _sourcePathSelected = !_sourcePathSelected;
                 _finalPathSelected = !_finalPathSelected;
                 _fileTypeSelected = !_fileTypeSelected;
-                Presenter.SearchFiles();
-                /*
-                if (_fileTypeTxt)
-                {
-                    _fileTypeTxt = !_fileTypeTxt;
-                    //SearchFiles(pathSource, fileTypeTxt, fileTypeTxt);
-                }
-                else if (!_fileTypeC_Cpp)
-                {
-                    _fileTypeC_Cpp = !_fileTypeC_Cpp;
-                    //SearchFiles(pathSource, fileTypeC, fileTypeCpp);
-                }
-                else if (!_fileTypeAll)
-                {
-                    _fileTypeAll = !_fileTypeAll;
-                    //SearchFiles(pathSource, fileTypeC, fileTypeCpp, _fileTypeAll);
-                }*/
+                Presenter.SearchFiles();                
             }
             else if (!_sourcePathSelected)
             {
@@ -121,8 +92,7 @@ namespace Copyright.View
         public void Order(string order)
         {
             int index = richTextBox1.Rtf.LastIndexOf("}");
-            richTextBox1.Rtf = richTextBox1.Rtf.Substring(0, index) + order;
-            //richTextBox1.Rtf = richTextBox1.Rtf. + order; //+ "}";
+            richTextBox1.Rtf = richTextBox1.Rtf.Substring(0, index) + order;            
         }
 
         public Presenter.CopyrightPresenter Presenter
