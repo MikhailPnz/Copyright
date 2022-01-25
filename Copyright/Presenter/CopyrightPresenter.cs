@@ -263,7 +263,7 @@ namespace Copyright.Presenter
             str.Replace("processedFiles", Convert.ToString(processedFiles));
             str.Replace("noMatchesFound", Convert.ToString(noMatchesFound));
 
-            if (noMatchesFound != processedFiles)
+            if ((noMatchesFound != processedFiles) && (noMatchesFound > 0))
             {
                 str.Append(author_);
                 foreach (CopyrightHolder ch in copyrightHolderNames)
