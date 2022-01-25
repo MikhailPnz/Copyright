@@ -157,22 +157,33 @@ namespace Copyright.Presenter
                 string line2 = line;
                 string pattern1 = "Copyright\\s\\(c\\)";
                 string pattern2 = "Copyright\\(C\\)";
+                string pattern2_ = "Copyright\\s\\(C\\)";
                 string pattern3 = "Copyright";
                 string pattern4 = "/\\*(.*?)\\*/"; // подстрока в /* */                
-                string pattern8 = "//(.+?)(?:\n|$)"; // подстрока в //                                                   
+                //string pattern8 = "//(.+?)(?:\n|$)"; // подстрока в //
+                string pattern8 = "//(.+?)(?:\\-end\\-|$)";
                 string replacement = "_copyright_c_";
 
                 ListAuthor(line);
 
-                MatchCollection matches = Regex.Matches(line, pattern4 + "|" + pattern8);
+                string multipleСomments = line;
+                multipleСomments = multipleСomments.Replace("\r\n", "-end-");
+
+                //MatchCollection matches = Regex.Matches(line, pattern4 + "|" + pattern8); // нужно удалить или игнорировать символы переноса строки
+                MatchCollection matches = Regex.Matches(multipleСomments, pattern4 + "|" + pattern8);                
 
                 foreach (Match match in matches)
                 {
                     string str = match.Value;
+                    str = str.Replace("-end-", "\r\n");
 
-                    if (Regex.IsMatch(match.Value, pattern1 + "|" + pattern2 + "|" + pattern3))
+                    if (Regex.IsMatch(match.Value, pattern1 + "|" + pattern2 + "|" + pattern3 + "|" + pattern2_))
+                    //if (Regex.IsMatch(match.Value, pattern2_))
                     {
-                        line2 = line2.Replace(match.Value, new Regex(pattern1 + "|" + pattern2 + "|" + pattern3).Replace(str, replacement));
+                        string st = new Regex(pattern1 + "|" + pattern2 + "|" + pattern3 + "|" + pattern2_).Replace(str, replacement);
+                        line2 = line2.Replace(match.Value, st);
+                        //line2 = line2.Replace(match.Value, new Regex(pattern1 + "|" + pattern2 + "|" + pattern3 + "|" + pattern2_).Replace(str, replacement));
+                        //line2 = line2.Replace(match.Value, new Regex(pattern2_).Replace(str, replacement));
                         matchesFound++;
                     }
                 }
