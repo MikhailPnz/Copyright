@@ -159,31 +159,42 @@ namespace Copyright.Presenter
                 string pattern2 = "Copyright\\(C\\)";
                 string pattern2_ = "Copyright\\s\\(C\\)";
                 string pattern3 = "Copyright";
-                string pattern4 = "/\\*(.*?)\\*/"; // подстрока в /* */                
-                //string pattern8 = "//(.+?)(?:\n|$)"; // подстрока в //
-                string pattern8 = "//(.+?)(?:\\-end\\-|$)";
+                string pattern4 = "/\\*(.*?)\\*/"; // подстрока в /* */                         
+                string pattern8 = "//(.+?)(?:\\-end\\-|$)"; // подстрока в //
                 string replacement = "_copyright_c_";
 
                 ListAuthor(line);
 
-                string multipleСomments = line;
-                multipleСomments = multipleСomments.Replace("\r\n", "-end-");
+                MatchCollection matches1 = Regex.Matches(line, @"\/\*[\w\W]*?\*\/");
 
-                //MatchCollection matches = Regex.Matches(line, pattern4 + "|" + pattern8); // нужно удалить или игнорировать символы переноса строки
-                MatchCollection matches = Regex.Matches(multipleСomments, pattern4 + "|" + pattern8);                
+                string line_edit = line;
+                line_edit = line_edit.Replace("\r\n", "-end-");
+                
+                MatchCollection matches = Regex.Matches(line_edit, pattern4 + "|" + pattern8);                
 
                 foreach (Match match in matches)
                 {
-                    string str = match.Value;
-                    str = str.Replace("-end-", "\r\n");
+                    line_edit = match.Value;
+                    line_edit = line_edit.Replace("-end-", "\r\n"); //строка для замены + шаблон
+                    string pattern = line_edit;
 
-                    if (Regex.IsMatch(match.Value, pattern1 + "|" + pattern2 + "|" + pattern3 + "|" + pattern2_))
-                    //if (Regex.IsMatch(match.Value, pattern2_))
+                    if (Regex.IsMatch(pattern, pattern1 + "|" + pattern2 + "|" + pattern2_))
                     {
-                        string st = new Regex(pattern1 + "|" + pattern2 + "|" + pattern3 + "|" + pattern2_).Replace(str, replacement);
-                        line2 = line2.Replace(match.Value, st);
-                        //line2 = line2.Replace(match.Value, new Regex(pattern1 + "|" + pattern2 + "|" + pattern3 + "|" + pattern2_).Replace(str, replacement));
-                        //line2 = line2.Replace(match.Value, new Regex(pattern2_).Replace(str, replacement));
+                        string str2 = new Regex(pattern1 + "|" + pattern2 + "|" + pattern2_).Replace(line_edit, replacement);
+
+                        if (Regex.IsMatch(str2, pattern3))
+                        {
+                            line2 = line2.Replace(pattern, new Regex(pattern3).Replace(str2, replacement));
+                        }
+                        else 
+                        {
+                            line2 = line2.Replace(pattern, str2);
+                        }                           
+                        matchesFound++;
+                    }
+                    if (Regex.IsMatch(pattern, pattern3))                    
+                    {                        
+                        line2 = line2.Replace(pattern, new Regex(pattern3).Replace(line_edit, replacement));                        
                         matchesFound++;
                     }
                 }
@@ -211,7 +222,7 @@ namespace Copyright.Presenter
             string pattern5 = @"(\S+)\s+(\S)\.\s*(\S)\."; // Фамилия И.О.
             string pattern6 = @"([A-Z][a-z]{1,14}\s[A-Z][a-z]{1,14}\s[A-Z][a-z]{1,14})|([А-Я][а-я]{1,14}\s[А-Я][а-я]{1,14}\s[А-Я][а-я]{1,14})"; // ФИО
             string pattern7 = @"([A-Z][a-z]{1,14}\s[A-Z][a-z]{1,14})|([А-Я][а-я]{1,14}\s[А-Я][а-я]{1,14})"; // Фамилия Имя
-
+            
             MatchCollection copyrightHolderMatches = Regex.Matches(line, pattern5 + "|" + pattern6 + "|" + pattern7);           
             foreach (Match chm in copyrightHolderMatches)
             {                
