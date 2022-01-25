@@ -168,30 +168,7 @@ namespace Copyright.Presenter
                 MatchCollection matches = Regex.Matches(line, pattern4 + "|" + pattern8);                
 
                 foreach (Match match in matches)
-                {
-                    /*
-                    string line_edit = match.Value;                    
-                    string pattern = line_edit;
-
-                    if (Regex.IsMatch(pattern, pattern1 + "|" + pattern2 + "|" + pattern2_))
-                    {
-                        string str2 = new Regex(pattern1 + "|" + pattern2 + "|" + pattern2_).Replace(line_edit, replacement);
-
-                        if (Regex.IsMatch(str2, pattern3))
-                        {
-                            line2 = line2.Replace(pattern, new Regex(pattern3).Replace(str2, replacement));
-                        }
-                        else 
-                        {
-                            line2 = line2.Replace(pattern, str2);
-                        }                           
-                        matchesFound++;
-                    }
-                    if (Regex.IsMatch(pattern, pattern3))                    
-                    {                        
-                        line2 = line2.Replace(pattern, new Regex(pattern3).Replace(line_edit, replacement));                        
-                        matchesFound++;
-                    } */
+                {                    
                     string line_edit = match.Value;
 
                     if (Regex.IsMatch(match.Value, pattern1 + "|" + pattern2 + "|" + pattern2_ + "|" + pattern3))
@@ -221,7 +198,7 @@ namespace Copyright.Presenter
         {
             var copyrightHolderNames = from copyrightHolder in _data.GetAllCopyrightHolders() select copyrightHolder.Name;
 
-            string pattern1 = @"(\(C\)|\(c\)).+?(\sLtd)"; // Ltd - в принципе любая компания
+            string pattern1 = @"(\(C\)|\(c\)).+?(\sLtd)"; // Ltd
             string pattern2 = @"(\(C\)|\(c\)).+?([A-Z][a-z]{1,14}\s[A-Z][a-z]{1,14}\s[A-Z][a-z]{1,14})"; // ФИО
             string pattern3 = @"(\(C\)|\(c\)).+?([A-Z][a-z]{1,14}\s[A-Z][a-z]{1,14})"; // ФИ
 
@@ -254,8 +231,7 @@ namespace Copyright.Presenter
             {
                 foreach (Match m in matches)
                 {
-                    string str = m.Value;
-                    // if (Regex.IsMatch(m.Value, lch))
+                    string str = m.Value;                    
                     if (str.Contains(lch))
                     {
                         _data.CountNumberOfFiles_CopyrightHolder(lch);                        
