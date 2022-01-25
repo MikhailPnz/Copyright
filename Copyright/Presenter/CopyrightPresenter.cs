@@ -159,23 +159,17 @@ namespace Copyright.Presenter
                 string pattern2 = "Copyright\\(C\\)";
                 string pattern2_ = "Copyright\\s\\(C\\)";
                 string pattern3 = "Copyright";
-                string pattern4 = "/\\*(.*?)\\*/"; // подстрока в /* */                         
-                string pattern8 = "//(.+?)(?:\\-end\\-|$)"; // подстрока в //
+                string pattern4 = @"\/\*[\w\W]*?\*\/"; // подстрока в /* */                         
+                string pattern8 = "//(.+?)(?:\n|$)"; // подстрока в //
                 string replacement = "_copyright_c_";
 
-                ListAuthor(line);
-
-                MatchCollection matches1 = Regex.Matches(line, @"\/\*[\w\W]*?\*\/");
-
-                string line_edit = line;
-                line_edit = line_edit.Replace("\r\n", "-end-");
+                ListAuthor(line);                               
                 
-                MatchCollection matches = Regex.Matches(line_edit, pattern4 + "|" + pattern8);                
+                MatchCollection matches = Regex.Matches(line, pattern4 + "|" + pattern8);                
 
                 foreach (Match match in matches)
                 {
-                    line_edit = match.Value;
-                    line_edit = line_edit.Replace("-end-", "\r\n"); //строка для замены + шаблон
+                    string line_edit = match.Value;                    
                     string pattern = line_edit;
 
                     if (Regex.IsMatch(pattern, pattern1 + "|" + pattern2 + "|" + pattern2_))
