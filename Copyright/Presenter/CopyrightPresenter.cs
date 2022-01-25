@@ -265,6 +265,7 @@ namespace Copyright.Presenter
 
             if (noMatchesFound != processedFiles)
             {
+                str.Append(author_);
                 foreach (CopyrightHolder ch in copyrightHolderNames)
                 {
                     str.Append(author);
