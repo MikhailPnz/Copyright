@@ -159,7 +159,7 @@ namespace Copyright.Presenter
                 string pattern2 = "Copyright\\(C\\)";
                 string pattern2_ = "Copyright\\s\\(C\\)";
                 string pattern3 = "Copyright";
-                string pattern4 = @"\/\*[\w\W]*?\*\/"; // подстрока в /* */                         
+                string pattern4 = @"\/\*[\w\W]*?\*\/"; // подстрока в /* */                
                 string pattern8 = "//(.+?)(?:\n|$)"; // подстрока в //
                 string replacement = "_copyright_c_";
 
@@ -251,9 +251,10 @@ namespace Copyright.Presenter
             string table = @"{{\rtf1\ansi\deff0" +
                             @"\trowd\cellx4020\cellx5520\intbl\cell\intbl    Кол-во файлов:\cell\row" +
                             @"\trowd\cellx4020\cellx5520\intbl   Всего обработано:\cell\intbl                processedFiles\cell\row" +
-                            @"\trowd\cellx4020\cellx5520\intbl   Сигнатуры не найдены:\cell\intbl                noMatchesFound\cell\row" +
-                            @"\trowd\cellx5520\intbl\cell\row" +
-                            @"\trowd\cellx4020\cellx5520\intbl   Список авторов:\cell\intbl\cell\row";                                                       
+                            @"\trowd\cellx4020\cellx5520\intbl   Сигнатуры не найдены:\cell\intbl                noMatchesFound\cell\row";
+
+            string author_ = @"\trowd\cellx5520\intbl\cell\row" +
+                            @"\trowd\cellx4020\cellx5520\intbl   Список авторов:\cell\intbl\cell\row";
 
             string author = @"\trowd\cellx4020\cellx5520\intbl   Name\cell\intbl                NumberOfFiles\cell\row";
 
@@ -262,12 +263,15 @@ namespace Copyright.Presenter
             str.Replace("processedFiles", Convert.ToString(processedFiles));
             str.Replace("noMatchesFound", Convert.ToString(noMatchesFound));
 
-            foreach (CopyrightHolder ch in copyrightHolderNames)
+            if (noMatchesFound != processedFiles)
             {
-                str.Append(author);
-                str.Replace("Name", ch.Name);
-                str.Replace("NumberOfFiles", Convert.ToString(ch.NumberOfFiles));               
-            }
+                foreach (CopyrightHolder ch in copyrightHolderNames)
+                {
+                    str.Append(author);
+                    str.Replace("Name", ch.Name);
+                    str.Replace("NumberOfFiles", Convert.ToString(ch.NumberOfFiles));
+                }
+            }            
 
             str.Append("}}");
 
