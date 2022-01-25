@@ -169,6 +169,7 @@ namespace Copyright.Presenter
 
                 foreach (Match match in matches)
                 {
+                    /*
                     string line_edit = match.Value;                    
                     string pattern = line_edit;
 
@@ -189,6 +190,13 @@ namespace Copyright.Presenter
                     if (Regex.IsMatch(pattern, pattern3))                    
                     {                        
                         line2 = line2.Replace(pattern, new Regex(pattern3).Replace(line_edit, replacement));                        
+                        matchesFound++;
+                    } */
+                    string line_edit = match.Value;
+
+                    if (Regex.IsMatch(match.Value, pattern1 + "|" + pattern2 + "|" + pattern2_ + "|" + pattern3))
+                    {
+                        line2 = line2.Replace(match.Value, new Regex(pattern1 + "|" + pattern2 + "|" + pattern2_ + "|" + pattern3).Replace(line_edit, replacement));
                         matchesFound++;
                     }
                 }
@@ -213,11 +221,19 @@ namespace Copyright.Presenter
         {
             var copyrightHolderNames = from copyrightHolder in _data.GetAllCopyrightHolders() select copyrightHolder.Name;
 
-            string pattern5 = @"(\S+)\s+(\S)\.\s*(\S)\."; // Фамилия И.О.
-            string pattern6 = @"([A-Z][a-z]{1,14}\s[A-Z][a-z]{1,14}\s[A-Z][a-z]{1,14})|([А-Я][а-я]{1,14}\s[А-Я][а-я]{1,14}\s[А-Я][а-я]{1,14})"; // ФИО
-            string pattern7 = @"([A-Z][a-z]{1,14}\s[A-Z][a-z]{1,14})|([А-Я][а-я]{1,14}\s[А-Я][а-я]{1,14})"; // Фамилия Имя
+            string pattern1 = @"(\(C\)|\(c\)).+?(\sLtd)"; // Ltd - в принципе любая компания
+            string pattern2 = @"(\(C\)|\(c\)).+?([A-Z][a-z]{1,14}\s[A-Z][a-z]{1,14}\s[A-Z][a-z]{1,14})"; // ФИО
+            string pattern3 = @"(\(C\)|\(c\)).+?([A-Z][a-z]{1,14}\s[A-Z][a-z]{1,14})"; // ФИ
+
+            string pattern4 = @"(\(C\)|\(c\)).+?([А-ЯЁ][а-яё]{1,14}([-][А-ЯЁ][а-яё]{1,14})?\s[А-ЯЁ][а-яё]{1,14}\s[А-ЯЁ][а-яё]{1,14})"; // ФИО рус
+            string pattern5 = @"(\(C\)|\(c\)).+?([А-ЯЁ][а-яё]{1,14}([-][А-ЯЁ][а-яё]{1,14})?\s[А-ЯЁ][а-яё]{1,14})"; // Фамилия Имя рус            
+            string pattern6 = @"(\(C\)|\(c\)).+?(\S+)\s+(\S)\.\s*(\S)\."; // Фамилия И.О.            
+            string pattern7 = @"/(\(C\)|\(c\)).+?(\S)\.\s*(\S)\.\s(\S+)/"; // И.О. Фамилия                        
             
-            MatchCollection copyrightHolderMatches = Regex.Matches(line, pattern5 + "|" + pattern6 + "|" + pattern7);           
+
+            MatchCollection copyrightHolderMatches = Regex.Matches(line, pattern1 + "|" + pattern2 + "|" + pattern3 + "|" + 
+                                                                         pattern4 + "|" + pattern5 + "|" + pattern6 + "|" + pattern7);
+
             foreach (Match chm in copyrightHolderMatches)
             {                
                 if (!copyrightHolderNames.Contains(chm.Value))
@@ -238,7 +254,9 @@ namespace Copyright.Presenter
             {
                 foreach (Match m in matches)
                 {
-                    if (Regex.IsMatch(m.Value, lch))
+                    string str = m.Value;
+                    //if (Regex.IsMatch(m.Value, lch))
+                    if (str.Contains(lch))
                     {
                         _data.CountNumberOfFiles_CopyrightHolder(lch);                        
                         break;

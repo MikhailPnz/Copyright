@@ -7,9 +7,7 @@ namespace Copyright.View
     {
         void Order(string order);
         void Notification(string message);        
-        void Notification(string message1, string message2);
-
-        //IList<string> CopyrightHolderList { set; }
+        void Notification(string message1, string message2);        
         Presenter.CopyrightPresenter Presenter { set; }
     }
 }
