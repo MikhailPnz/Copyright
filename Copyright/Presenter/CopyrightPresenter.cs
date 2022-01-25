@@ -255,7 +255,7 @@ namespace Copyright.Presenter
                 foreach (Match m in matches)
                 {
                     string str = m.Value;
-                    //if (Regex.IsMatch(m.Value, lch))
+                    // if (Regex.IsMatch(m.Value, lch))
                     if (str.Contains(lch))
                     {
                         _data.CountNumberOfFiles_CopyrightHolder(lch);                        
